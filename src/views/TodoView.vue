@@ -1,5 +1,6 @@
 <template>
-  <div> TodoView</div>
+  <div> To Do List</div>
+  <hr>
   <RouterLink to="/">Go to Home</RouterLink>
   <div v-for="data in alldata">
     <p id="todo_id" class="hidden">{{ data.id }}</p>
@@ -11,10 +12,7 @@
 
 <script>
 import axios from 'axios';
-
-
-const url = import.meta.env.API_URL;
-
+const url = import.meta.env.VITE_API_URL;
 
 export default {
   name: "todo",
@@ -29,7 +27,6 @@ export default {
   methods: {
     FetchData() {
       axios.get(url).then((res) => {
-
         this.alldata = res.data.data;
       })
     },
