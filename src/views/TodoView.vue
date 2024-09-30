@@ -1,10 +1,10 @@
 <template>
-  <div @click="fetchData">From TodoView</div>
+  <div> TodoView</div>
   <RouterLink to="/">Go to Home</RouterLink>
-<!--  <h1>{{ data.message }}</h1>-->
-  <p v-for="one_data of alldata" :key="one_data.id">
-    {{one_data.message}}
-  </p>
+  <div v-for="a in alldata">
+<!--    <p v-for="childData in data">{{ data }}</p>-->
+    {{ a.data }}
+  </div>
 </template>
 
 <script>
@@ -27,7 +27,8 @@ export default {
   methods: {
     FetchData() {
       axios.get(url).then((res) => {
-        this.alldata = res.data;
+        // console.log(res.data)
+        this.alldata = res;
         console.log(this.alldata)
       })
     }
