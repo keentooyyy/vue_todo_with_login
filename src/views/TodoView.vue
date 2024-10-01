@@ -12,13 +12,15 @@
 
 <script>
 import axios from 'axios';
+import router from "@/router/index.js";
+
 const url = import.meta.env.VITE_API_URL;
 
 export default {
-  name: "todo",
   data() {
     return {
       alldata: [],
+      valuesToComponent: []
     };
   },
   mounted() {
@@ -31,21 +33,22 @@ export default {
       })
     },
     DeleteButton(event) {
-      const getID = document.getElementById('todo_id').innerText
+
       const getParent = event.target.parentNode;
+      const getID = getParent.children[0].textContent;
       getParent.remove();
       const delUrl = `${url}/${getID}`;
       axios.delete(delUrl).then((res) => {
         alert(res.data.message);
       })
-      //
-    },
-    EditButton(event){
-      const getID = document.getElementById('todo_id').innerText;
-      const getTodoItem = event.target.previousSibling;
-      console.log(getID)
-      console.log(getTodoItem)
 
+    },
+    EditButton(event) {
+      const getParent = event.target.parentNode;
+      const getID = getParent.children[0].textContent;
+      router.push({
+        path: `/todo/${getID}`,
+      })
     }
   }
 }

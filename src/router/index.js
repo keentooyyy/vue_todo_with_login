@@ -14,7 +14,9 @@ const routes = [
     },
     {
         path: "/todo/:id",
+        name: 'todo_items',
         component: EditTodo,
+        props: true,
 
     }
 
