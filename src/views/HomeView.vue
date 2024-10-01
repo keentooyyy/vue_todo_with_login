@@ -1,5 +1,3 @@
-
-
 <template>
   <h1>From HomeView</h1>
   <RouterLink to="/todo">Go to Todo</RouterLink>
