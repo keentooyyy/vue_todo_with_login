@@ -1,16 +1,16 @@
 <template>
   <div class="mt-12 grid w-11/12 bg-white place-self-center rounded-lg p-8">
     <div class="text-6xl p-12 text-center font-bold"> To Do List</div>
-    <hr class="mb-3">
+    <hr class="mb-6">
     <div class="grid grid-cols-1 ">
       <input class="ring-1 ring-gray-500 mb-5 p-2 rounded-lg" type="text">
-      <button @click="AddButton($event)" class="bg-green-600 text-white px-5 py-3 w-2/6 place-self-end mb-3 rounded-lg">Add Todo</button>
+      <button @click="AddButton($event)" class="bg-green-600 text-white px-5 py-3 place-self-start mb-3 rounded-lg">Add Todo</button>
     </div>
 <!--    <RouterLink to="/">Go to Home</RouterLink>-->
     <div class="text-3xl my-6 font-medium">My Todo(s)</div>
     <div v-for="data in alldata" class="grid grid-cols-2 items-center">
       <p id="todo_id" class="hidden">{{ data.id }}</p>
-      <p class="text-2xl" contenteditable="true" @blur="EditButton" @keydown.enter.prevent="OnEnter($event)">
+      <p class="text-2xl outline-none" contenteditable="true" @blur="EditButton" @keydown.enter.prevent="OnEnter($event)">
         {{ data.todo_item }}</p>
       <button class="bg-red-600 text-white px-5 py-3 w-2/6 place-self-end mb-3 rounded-lg" @click="DeleteButton($event)">Delete
       </button>
@@ -63,17 +63,20 @@ export default {
     },
     AddButton(event){
       const getInput = event.target.previousElementSibling.value;
-
-      const data ={
-        todo_item: getInput,
+      if (getInput.length === 0){
+        alert("Todo cannot be empty")
       }
-      axios.post(url,data).then(() => {
-        this.FetchData();
-        const getInputHTML = event.target.previousSibling;
-        getInputHTML.value = '';
-        // console.log(getInput);
-      })
-
+      else {
+        const data ={
+          todo_item: getInput,
+        }
+        axios.post(url,data).then(() => {
+          this.FetchData();
+          const getInputHTML = event.target.previousSibling;
+          getInputHTML.value = '';
+          // console.log(getInput);
+        })
+      }
 
     },
     EditButton(event) {
