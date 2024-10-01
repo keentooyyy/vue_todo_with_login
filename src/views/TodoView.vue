@@ -21,15 +21,12 @@
 
 <script>
 import axios from 'axios';
-import * as events from "node:events";
+
 
 const url = import.meta.env.VITE_API_URL;
 
 export default {
   computed: {
-    events() {
-      return events
-    }
   },
   data() {
 
@@ -74,7 +71,6 @@ export default {
           this.FetchData();
           const getInputHTML = event.target.previousSibling;
           getInputHTML.value = '';
-          // console.log(getInput);
         })
       }
 
