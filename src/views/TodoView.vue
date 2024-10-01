@@ -3,8 +3,8 @@
     <div class="text-6xl p-12 text-center font-bold"> To Do List</div>
     <hr class="mb-3">
     <div class="grid grid-cols-1 ">
-      <input class="ring-1 ring-gray-500 mb-5 p-2 rounded-lg" v-model="inputValue" type="text">
-      <button @click="AddButton" class="bg-green-600 text-white px-5 py-3 w-2/6 place-self-end mb-3 rounded-lg">Add Todo</button>
+      <input class="ring-1 ring-gray-500 mb-5 p-2 rounded-lg" type="text">
+      <button @click="AddButton($event)" class="bg-green-600 text-white px-5 py-3 w-2/6 place-self-end mb-3 rounded-lg">Add Todo</button>
     </div>
 <!--    <RouterLink to="/">Go to Home</RouterLink>-->
     <div class="text-3xl my-6 font-medium">My Todo(s)</div>
@@ -21,17 +21,21 @@
 
 <script>
 import axios from 'axios';
-import {ref} from "vue";
+import * as events from "node:events";
 
 const url = import.meta.env.VITE_API_URL;
 
 export default {
+  computed: {
+    events() {
+      return events
+    }
+  },
   data() {
 
     return {
       alldata: [],
       messages: [],
-      inputValue: ref('')
     };
   },
   setup(){
@@ -57,16 +61,20 @@ export default {
       })
 
     },
-    AddButton(){
-      // console.log(this.inputValue)
-      const getInput = this.inputValue;
+    AddButton(event){
+      const getInput = event.target.previousElementSibling.value;
 
       const data ={
         todo_item: getInput,
       }
       axios.post(url,data).then(() => {
         this.FetchData();
+        const getInputHTML = event.target.previousSibling;
+        getInputHTML.value = '';
+        // console.log(getInput);
       })
+
+
     },
     EditButton(event) {
       const getParent = event.target.parentNode;
