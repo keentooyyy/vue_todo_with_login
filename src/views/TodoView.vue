@@ -69,9 +69,9 @@ export default {
         }
         axios.post(url,data).then(() => {
           this.FetchData();
-          const getInputHTML = event.target.previousSibling;
-          getInputHTML.value = '';
         })
+        const getInputHTML = event.target.previousSibling;
+        getInputHTML.value = '';
       }
 
     },
