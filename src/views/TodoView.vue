@@ -43,7 +43,7 @@ export default {
     EditButton(event){
       const getID = document.getElementById('todo_id').innerText;
       const getTodoItem = event.target.previousSibling;
-      // console.log(getID)
+      console.log(getID)
       console.log(getTodoItem)
 
     }
