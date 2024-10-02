@@ -3,7 +3,7 @@
     <div class="text-6xl p-12 text-center font-bold"> To Do List</div>
     <hr class="mb-6">
     <div class="grid grid-cols-1 ">
-      <input class="ring-1 ring-gray-500 mb-5 p-2 rounded-lg" type="text">
+      <input class="ring-1 ring-gray-500 mb-5 p-2 rounded-lg" type="text" @keydown.enter.prevent="ClickAdd($event)">
       <button @click="AddButton($event)" class="bg-green-600 text-white px-5 py-3 place-self-start mb-3 rounded-lg">Add Todo</button>
     </div>
 <!--    <RouterLink to="/">Go to Home</RouterLink>-->
@@ -43,7 +43,12 @@ export default {
   },
   methods: {
     FetchData() {
-      axios.get(url).then((res) => {
+      const headers = {
+        headers: {
+          'Authorization': 'Bearer ' + "asdasd",
+        }
+      }
+      axios.get(url,headers).then((res) => {
         this.alldata = res.data.data;
       })
     },
@@ -54,7 +59,7 @@ export default {
       getParent.remove();
       const delUrl = `${url}/${getID}`;
       axios.delete(delUrl).then(() => {
-
+        this.FetchData();
       })
 
     },
@@ -92,10 +97,17 @@ export default {
       const data = {
         todo_item: getTodo
       }
-      axios.put(editUrl, data, config);
+      axios.put(editUrl, data, config).then(() => {
+        this.FetchData();
+      });
     },
     OnEnter(event) {
       event.target.blur();
+    },
+    ClickAdd(event){
+      const getButton = event.target.nextElementSibling;
+      // console.log(getButton);
+      getButton.click();
     }
   }
 }
