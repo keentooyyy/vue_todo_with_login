@@ -1,18 +1,29 @@
 <template>
-  <div class="mt-12 grid w-11/12 bg-white place-self-center rounded-lg p-8">
-    <div class="text-6xl p-12 text-center font-bold"> To Do List</div>
+  <div class="mt-12 grid w-full bg-white place-self-center rounded-lg p-2 sm:max-w-xl sm:p-8">
+    <div class="text-4xl p-6 text-center font-bold md:p-12"> To Do List</div>
     <hr class="mb-6">
     <div class="grid grid-cols-1 ">
       <input class="ring-1 ring-gray-500 mb-5 p-2 rounded-lg" type="text" @keydown.enter.prevent="ClickAdd($event)">
-      <button @click="AddButton($event)" class="bg-green-600 text-white px-5 py-3 place-self-start mb-3 rounded-lg">Add Todo</button>
+      <button class="bg-green-600 text-white px-5 py-3 place-self-start mb-3 rounded-lg" @click="AddButton($event)">Add
+        Todo
+      </button>
     </div>
-<!--    <RouterLink to="/">Go to Home</RouterLink>-->
-    <div class="text-3xl my-6 font-medium">My Todo(s)</div>
-    <div v-for="data in alldata" class="grid grid-cols-2 items-center">
+    <div class="my-6 font-medium text-2xl md:text-3xl">My Todo(s)</div>
+    <div class="flex gap-x-2 mb-5">
+      <div class="bg-blue-500 text-xs text-white py-1 px-3 rounded-sm font-bold">TOTAL: {{ alldata.length }}</div>
+      <div class="bg-green-600 text-xs text-white py-1 px-3 rounded-sm font-bold">COMPLETE: {{completed.length}}</div>
+      <div class="bg-red-500 text-xs text-white py-1 px-5 rounded-sm font-bold">INCOMPLETE: {{alldata.length - completed.length}}</div>
+    </div>
+
+    <div v-for="data in alldata" class="grid grid-cols-2 items-center mb-5">
       <p id="todo_id" class="hidden">{{ data.id }}</p>
-      <p class="text-2xl outline-none" contenteditable="true" @blur="EditButton" @keydown.enter.prevent="OnEnter($event)">
-        {{ data.todo_item }}</p>
-      <button class="bg-red-600 text-white px-5 py-3 w-2/6 place-self-end mb-3 rounded-lg" @click="DeleteButton($event)">Delete
+      <div class="flex gap-x-5 items-center">
+        <input @change="Checked($event)" :value="data" v-model="completed" type="checkbox" class="border-none w-6 h-6 accent-blue-500 text-white bg-white">
+        <p class="text-2xl outline-none strik" contenteditable="true" @blur="EditButton"
+           @keydown.enter.prevent="OnEnter($event)">
+          {{ data.todo_item }}</p>
+      </div>
+      <button class="bg-red-600 text-white px-5 py-3 place-self-end rounded-lg" @click="DeleteButton($event)">Delete
       </button>
     </div>
   </div>
@@ -26,19 +37,21 @@ import axios from 'axios';
 const url = import.meta.env.VITE_API_URL;
 
 export default {
-  computed: {
-  },
+  computed: {},
   data() {
 
     return {
       alldata: [],
-      messages: [],
+      completed: [],
+
     };
-  },
-  setup(){
 
   },
+  setup() {
+    // console.log(this.completed);
+  },
   mounted() {
+    // console.log(this.completed)
     this.FetchData();
   },
   methods: {
@@ -48,7 +61,7 @@ export default {
           'Authorization': 'Bearer ' + "asdasd",
         }
       }
-      axios.get(url,headers).then((res) => {
+      axios.get(url, headers).then((res) => {
         this.alldata = res.data.data;
       })
     },
@@ -63,16 +76,15 @@ export default {
       })
 
     },
-    AddButton(event){
+    AddButton(event) {
       const getInput = event.target.previousElementSibling.value;
-      if (getInput.length === 0){
+      if (getInput.length === 0) {
         alert("Todo cannot be empty")
-      }
-      else {
-        const data ={
+      } else {
+        const data = {
           todo_item: getInput,
         }
-        axios.post(url,data).then(() => {
+        axios.post(url, data).then(() => {
           this.FetchData();
         })
         const getInputHTML = event.target.previousSibling;
@@ -81,8 +93,10 @@ export default {
 
     },
     EditButton(event) {
-      const getParent = event.target.parentNode;
+      const getParent = event.target.parentNode.parentNode;
+
       const getID = getParent.children[0].textContent;
+      // console.log(getID);
       const getTodo = getParent.children[1].textContent;
 
 
@@ -104,13 +118,22 @@ export default {
     OnEnter(event) {
       event.target.blur();
     },
-    ClickAdd(event){
+    ClickAdd(event) {
       const getButton = event.target.nextElementSibling;
       // console.log(getButton);
       getButton.click();
+    },
+    Checked(event){
+
+      const getLabel = event.target.nextElementSibling;
+      getLabel.setAttribute('class')
+      console.log(getLabel)
     }
+
   }
+
 }
+
 </script>
 
 <style scoped>
