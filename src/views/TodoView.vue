@@ -48,7 +48,7 @@ export default {
 
   },
   updated() {
-    // console.log(this.alldata.length);
+    console.log(this.alldata.length);
   },
   setup() {
 
