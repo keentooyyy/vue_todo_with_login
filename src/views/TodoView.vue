@@ -23,7 +23,7 @@
            @keydown.enter.prevent="OnEnter($event)">
           {{ data.todo_item }}</p>
       </div>
-      <button class="bg-red-600 text-white px-5 py-3 place-self-end rounded-lg" @click="new DeleteButton($event)">Delete
+      <button class="bg-red-600 text-white px-5 py-3 place-self-end rounded-lg" @click="DeleteButton($event)">Delete
       </button>
     </div>
   </div>
