@@ -19,11 +19,11 @@
       <p id="todo_id" class="hidden">{{ data.id }}</p>
       <div class="flex gap-x-5 items-center">
         <input @change="Checked($event)" :value="data" v-model="completed" type="checkbox" class="border-none w-6 h-6 accent-blue-500 text-white bg-white">
-        <p class="text-2xl outline-none strik" contenteditable="true" @blur="EditButton"
+        <p class="text-2xl outline-none " contenteditable="true" @blur="EditButton"
            @keydown.enter.prevent="OnEnter($event)">
           {{ data.todo_item }}</p>
       </div>
-      <button class="bg-red-600 text-white px-5 py-3 place-self-end rounded-lg" @click="DeleteButton($event)">Delete
+      <button class="bg-red-600 text-white px-5 py-3 place-self-end rounded-lg" @click="new DeleteButton($event)">Delete
       </button>
     </div>
   </div>
@@ -47,7 +47,11 @@ export default {
     };
 
   },
+  updated() {
+    // console.log(this.alldata.length);
+  },
   setup() {
+
     // console.log(this.completed);
   },
   mounted() {
@@ -56,12 +60,8 @@ export default {
   },
   methods: {
     FetchData() {
-      const headers = {
-        headers: {
-          'Authorization': 'Bearer ' + "asdasd",
-        }
-      }
-      axios.get(url, headers).then((res) => {
+
+      axios.get(url).then((res) => {
         this.alldata = res.data.data;
       })
     },
@@ -69,11 +69,13 @@ export default {
 
       const getParent = event.target.parentNode;
       const getID = getParent.children[0].textContent;
-      getParent.remove();
       const delUrl = `${url}/${getID}`;
-      axios.delete(delUrl).then(() => {
-        this.FetchData();
-      })
+      const findID = this.alldata.findIndex(index => index.id == getID);
+      this.alldata.splice(findID, 1);
+      axios.delete(delUrl)
+
+
+
 
     },
     AddButton(event) {
@@ -94,9 +96,7 @@ export default {
     },
     EditButton(event) {
       const getParent = event.target.parentNode.parentNode;
-
       const getID = getParent.children[0].textContent;
-      // console.log(getID);
       const getTodo = getParent.children[1].textContent;
 
 
@@ -120,14 +120,13 @@ export default {
     },
     ClickAdd(event) {
       const getButton = event.target.nextElementSibling;
-      // console.log(getButton);
       getButton.click();
     },
     Checked(event){
 
       const getLabel = event.target.nextElementSibling;
-      getLabel.setAttribute('class')
-      console.log(getLabel)
+      // console.log(getLabel)
+      getLabel.classList.toggle('line-through');
     }
 
   }
